@@ -139,12 +139,26 @@ right = 0
 		playerBody.m_angularVelocity = 0
 		right = 0
 	} 
-	
-	
-
-	
 })
+document.addEventListener('touchstart',function(e){
+	var t = e.changedTouches
+	if(t[0].pageX < canvas.width/2)left = 1
+	else right = 1
+})
+document.addEventListener('touchend',function(e){
+	var t = e.changedTouches
+	left = 0
+right = 0
+		if(t[0].pageX < canvas.width/2){
+			playerBody.m_angularVelocity = 0
+			left = 0
 
+		} 
+	else{
+		playerBody.m_angularVelocity = 0
+		right = 0
+	} 
+})
 	document.addEventListener('mousemove',function(e){
 		/*var dir = 90//dirTo(-world.m_bodyList.m_position.x,-world.m_bodyList.m_position.y,e.x,e.y)* Math.PI/180
 	world.m_bodyList.m_rotation += (dir-world.m_bodyList.m_rotation)/100*/
