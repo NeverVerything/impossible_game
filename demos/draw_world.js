@@ -14,8 +14,6 @@ var cp = []
 var cpr = 30
 var spawnX = -700
 var spawnY = 190
-spawnX = 800
-spawnY = -850
 var timer = 0
 function checkpoints(){
 	if(cp.length > 0){
