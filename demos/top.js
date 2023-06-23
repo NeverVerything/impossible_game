@@ -1,0 +1,203 @@
+demos.top = {};
+var px = 100
+document.getElementById('canvas').width = window.innerWidth
+document.getElementById('canvas').height = window.innerHeight
+demos.top.createBall = function(world, x, y, rad, fixed) {
+	var ballSd = new b2CircleDef();
+	if (!fixed) ballSd.density = 1.0;
+	ballSd.radius = rad || 10;
+	ballSd.restitution = 0.2;
+	var ballBd = new b2BodyDef();
+	ballBd.AddShape(ballSd);
+	ballBd.position.Set(x,y);
+	return world.CreateBody(ballBd);
+};
+demos.top.createPoly = function(world, x, y, points, fixed) {
+	var polySd = new b2PolyDef();
+	if (!fixed) polySd.density = 1.0;
+	polySd.vertexCount = points.length;
+	for (var i = 0; i < points.length; i++) {
+		polySd.vertices[i].Set(points[i][0], points[i][1]);
+	}
+	var polyBd = new b2BodyDef();
+	polyBd.AddShape(polySd);
+	polyBd.position.Set(x,y);
+	return world.CreateBody(polyBd)
+};
+demos.top.initWorld = function(world) {
+
+	var jointDef = new b2RevoluteJointDef();
+	var p1 = createBox(world, 150, 400, 1000, 20, true,1);
+	p1.color = 1
+	var p2 = createBox(world, 120, 300, 200, 100, true,1);
+	p2.color = 1
+	var p3 = createBox(world, 1600, 400, 300, 20, true,1);
+	p3.color = 1
+	var p4 = createBox(world, 2500, 0, 600, 20, false,1000);
+	p4.color = 1
+	var p5 = createBox(world, 2900, 0, 170, 10, true,1000);
+	p5.color = 1
+	for(var i = 0; i < 10; i++){
+		var p6 = createBox(world, 3100+i*50, -20-i*30, 10, 10, true,1000);
+	p6.color = 1
+	}
+	var p6 = createBox(world, 3200+i*50, -20-i*30, 120, 10, true,1000);
+	p6.color = 1
+	for(var i = 0; i < 10; i++){
+		var p6 = createBox(world, 3700-i*50, -380-i*30, 10, 10, true,1000);
+	p6.color = 1
+	}
+
+
+
+	var box1 = createBox(world, -700, 250, 40,40, false,4);
+	box1.color = 3
+	/*var slope = demos.top.createPoly(world, 1300, 400, [[-500,0],[0,-200],[0,0]], true,1);
+	slope.color = 4*/
+	for(var i = 0; i < 7;i++){
+		var b1 = createBox(world,1000+i*50, 300-i*50,50,25,false,10)
+	b1.color = 5
+	}
+	
+	for(var i = 1; i < 8;i++){
+		var p = createBox(world,1590+i*40, 375-i*50,250+i*10,25,true,10)
+	p.color = 1
+	}
+
+	var p7 = createBox(world, 2700, -665, 500, 10, true,1000);
+	p7.color = 1
+
+	for(var i2 = 0; i2 < 10; i2++){
+
+		var moving2 = createBox(world, 2100-150*i2, -665, 50, 10, false,40);
+	moving2.color = 1
+	var hold2 = createBall(world, 2100-150*i2, -865, 5, 0);
+	hold2.color = 2
+	moving2.spin = 1
+
+		jointDef.body1 =hold2
+	jointDef.body2 = moving2
+	jointDef.anchorPoint = hold2.GetCenterPosition()
+	world.CreateJoint(jointDef)
+}
+
+	var p = createBox(world, 600, -700, 70, 20, true);
+	p.color = 1
+	var p = createBox(world, 300, -750, 230, 20, true);
+	p.color = 1
+	var p = createBox(world, 640, -820, 50, 5, true);
+	p.color = 1
+
+
+////////////////////////aaa
+	var p1 = createBox(world, -400, -750, 150, 20, true,1);
+	p1.color = 1
+	var p = createBox(world, -560, -1045, 10, 315, true);
+	p.color = 1
+	var box = createBox(world, -450, -850, 20,20, false,500);
+	//pl1.m_position.x = 500
+	//pl1.m_position.y  = -800
+	box.color = 3
+	var pl = createBox(world, -450, -700, 150,10, false,100);
+	//pl1.m_position.x = 500
+	//pl1.m_position.y  = -800
+	pl.color = 2
+	jointDef.body1 = box
+	jointDef.body2 = pl
+	jointDef.anchorPoint = box.GetCenterPosition()
+	world.CreateJoint(jointDef);
+
+	var p = createBox(world, -800, -450, 300, 20, true);
+	p.color = 1
+	for(var i = 0; i < 10; i++){
+		var b = createBox(world, -750, -500-i*90, 35,5, true);
+	}
+	
+	b.color = 5
+
+
+var p = createBox(world, 330, -1440, 160, 500, true);
+	p.color = 1
+	p.remove = 1///////
+	var p = createBox(world, -300, -1350, 200, 10, true);
+	p.color = 1
+	var p = createBox(world, 50, -1200, 40, 10, true);
+	p.color = 1
+	var p = createBox(world, 260, -1140, 90, 10, true);
+	p.color = 1
+	
+	var p = createBox(world, 540, -1000, 140, 10, true);
+	p.color = 1
+
+	for(var i = 0;i < 6; i++){
+			var p = createBox(world, 750+i*70, -1020-i*54, 70+i, 27, true);
+	p.color = 1
+		}
+		var p = createBox(world, 1580, -1239, 375, 27, true);
+	p.color = 1
+	for(var i = 1;i < 4; i++){
+			var p = createBox(world, 750+(i-1.5)*130, -1320-(i-2)*54, 60+i, 27, true);
+	p.color = 1
+		}
+
+
+		var m = createBox(world, 2155, -1392, 200, 180, true,10);
+	m.color = 1
+
+
+	/*for(var i = 0; i < 10; i++){
+		for(var k = 0; k < 3; k++){
+			var b = createBox(world, 800+i*80, -1030-k*80, 40, 40, false, 100);
+	b.color = 5
+		}
+	}*/
+
+
+
+	var p = createBox(world, -2000, -1500, 100, 450, true,10);
+	p.color = 6
+	var p = createBox(world, -2040, -2200, 100, 110, true,10);
+	p.color = 6
+	var p = createBox(world, -1800, -2800, 400, 50, true,10);
+	p.color = 6
+	var p = createBox(world, -2800, -2600, 400, 70, true,10);
+	p.color = 6
+
+	for(var i = 0; i < 3;i++){
+		var p = createBox(world, -3100-70-((i*(i+1)/(i+9)*i*i*111))%400-200, -2800-200*i-i*((i*(i+1)/(i+9)*i*i*116))%90, 70, 70, true,10);
+	p.color = 6
+	}
+	var p = createBox(world, -3100-70-((i*(i+1)/(i+9)*i*i*111))%400-150, -2800-200*i-i*((i*(i+1)/(i+9)*i*i*116))%90, 70, 70, true,10);
+	p.color = 6
+
+var p = createBox(world, 950, -2800, 70, 1400, false,99999);
+	p.color = 1
+	p.sp = 1
+var p = createBox(world, 1350, -1300, 10, 10, true);
+	p.color = 1
+
+
+////////////////
+	var pl2 = createBox(world, -700, 190, 5,100, false,50);
+	pl2.m_position.x = 300
+	pl2.m_position.y  = -800
+	pl2.m_position.x = 685
+	pl2.m_position.y  = -1400
+	pl2.color = 2
+	pl2.m_rotation = Math.PI/2
+	var pl1 = createBox(world, spawnX, spawnY, 5,55, false,100);
+	//pl1.m_position.x = 1850
+	//pl1.m_position.y = -400
+	pl1.color = 2
+	pl1.m_rotation = Math.PI/2
+	jointDef.body1 = p4
+	jointDef.body2 = p3
+	jointDef.anchorPoint = new b2Vec2(p4.GetCenterPosition().x-100, p4.GetCenterPosition().y-500);
+	world.CreateJoint(jointDef);
+
+
+
+};
+demos.InitWorlds.push(demos.top.initWorld);
+
+
