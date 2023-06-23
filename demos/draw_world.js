@@ -180,7 +180,7 @@ function drawWorld(world, context) {
 	ctx.fillStyle = 'rgb(' + (191-0) + ',' + (209-0) + ',' + (229-0) + ')'
 	ctx.fillRect(0,0,document.getElementById('canvas').width,document.getElementById('canvas').height)
 	ctx.fillStyle = '#000000'
-	ctx.fillText(Math.round(world.m_bodyList.m_position.x) + ' ' + Math.round(world.m_bodyList.m_position.y),100,100)
+	//ctx.fillText(Math.round(world.m_bodyList.m_position.x) + ' ' + Math.round(world.m_bodyList.m_position.y),100,100)
 
 	
 	var sc = 0.1
