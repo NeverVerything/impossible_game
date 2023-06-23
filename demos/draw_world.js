@@ -6,7 +6,7 @@ var right = 0
 var player = 0
 var playerBody;
 var colors = ['#d8bfaa','#AC8F79','#62a87c','#313b72','#edf67d','#e9d3d0']
-
+var p2Unlocked = 0
 var cpx = [550,50,-1945,-3142,-3640,685,1350]//450
 var cpy = [-850,-1250,-2340,-2500,-3450,-1400,-1350]//-850
 var special=[1,2,4,5,6]
@@ -14,8 +14,8 @@ var cp = []
 var cpr = 30
 var spawnX = -700
 var spawnY = 190
-//spawnX = 2000
-//spawnY = -1792
+spawnX = 800
+spawnY = -850
 var timer = 0
 function checkpoints(){
 	if(cp.length > 0){
@@ -97,7 +97,7 @@ document.addEventListener('keydown',function(e){
 
 		if(e.keyCode == 65) left = 1
 	if(e.keyCode == 68) right = 1
-	if(e.keyCode == 32 && cp.includes(0)) player = 1 - player//world.m_gravity.y *= -1
+	if(e.keyCode == 32 && p2Unlocked==1) player = 1 - player//world.m_gravity.y *= -1
 
 	if(e.keyCode == 37){
 		for (var b = world.m_bodyList; b; b = b.m_next) {
@@ -140,10 +140,12 @@ right = 0
 		right = 0
 	} 
 })
+
 document.addEventListener('touchstart',function(e){
 	var t = e.changedTouches
 	if(t[0].pageX < canvas.width/2)left = 1
 	else right = 1
+	if(t[0].pageX>10&&t[0].pageX<70&&t[0].pageY>canvas.height-70&&t[0].pageY<canvas.height-10) player = 1 - player
 })
 document.addEventListener('touchend',function(e){
 	var t = e.changedTouches
@@ -180,7 +182,7 @@ function drawWorld(world, context) {
 	ctx.fillStyle = 'rgb(' + (191-0) + ',' + (209-0) + ',' + (229-0) + ')'
 	ctx.fillRect(0,0,document.getElementById('canvas').width,document.getElementById('canvas').height)
 	ctx.fillStyle = '#000000'
-	//ctx.fillText(Math.round(world.m_bodyList.m_position.x) + ' ' + Math.round(world.m_bodyList.m_position.y),100,100)
+	ctx.fillText(Math.round(world.m_bodyList.m_position.x) + ' ' + Math.round(world.m_bodyList.m_position.y),100,100)
 
 	
 	var sc = 0.1
@@ -250,9 +252,20 @@ for (var b = world.m_bodyList; b; b = b.m_next) {
 	ctx.fillText('Oh no!', 1200,1500)
 	ctx.fillText('At least 0.001% of the way there!', 2500,-800)
 	ctx.fillText('AHHHHHH', 1300,-1000)*/
-	ctx.fillText('Space.', 250,-1000)
+	//ctx.fillText('Space.', 250,-1000)
 	//ctx.fillText('Also... do not look down.', 100,-600)
+	
+
 		ctx.restore()
+		if(playerBody.m_position.x < 611 && playerBody.m_position.y < -720) p2Unlocked = 1
+		if(p2Unlocked){
+			ctx.fillStyle = colors[1]
+		ctx.strokeStyle = '#000000'
+		ctx.lineWidth = 3
+		ctx.fillRect(10,canvas.height-70,60,60)
+		ctx.strokeRect(10,canvas.height-70,60,60)
+		}
+		
 
 
 }
