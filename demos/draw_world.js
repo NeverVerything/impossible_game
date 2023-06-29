@@ -7,14 +7,31 @@ var player = 0
 var playerBody;
 var colors = ['#d8bfaa','#AC8F79','#62a87c','#313b72','#edf67d','#e9d3d0']
 var p2Unlocked = 0
-var cpx = [550,50,-1945,-3142,-3640,685,1350]//450
-var cpy = [-850,-1250,-2340,-2500,-3450,-1400,-1350]//-850
-var special=[1,2,4,5,6]
+var cpx = [550,50,-1945,-3142,-3640,685,1350,950]//450
+var cpy = [-850,-1250,-2340,-2500,-3450,-1400,-1350,-4300]//-850
+var special=[1,2,4,5,6,7]
 var cp = []
 var cpr = 30
 var spawnX = -700
 var spawnY = 190
+//spawnX = 876
+//spawnY = -4400
 var timer = 0
+function dirTo(x1, y1, x2, y2){
+	x1 = x1 - canvas.width/2
+	x2 = x2 - canvas.width/2
+	y1 = canvas.height/2 - y1
+	y2 = canvas.height/2 - y2
+	var dir = 0
+	if(Math.abs(x2 - x1) < 0.001){
+		if(y2 - y1 < 0) dir = 90
+		else dir = 270
+	}
+	else{
+	if(x2 - x1 >= 0) dir = -Math.atan((y2 - y1) / (x2 - x1)) * 180 / Math.PI
+	else dir = 180 - Math.atan((y2 - y1) / (x2 - x1)) * 180 / Math.PI}
+return (dir + 90) 
+}
 function checkpoints(){
 	if(cp.length > 0){
 		spawnX = cpx[Math.max(...cp)]
@@ -45,7 +62,7 @@ if(special.includes(i)){
 		var x2 = world.m_bodyList.m_position.x + Math.cos(world.m_bodyList.m_rotation+1.57)*55
 		var y1 = world.m_bodyList.m_position.y - Math.sin(world.m_bodyList.m_rotation+1.57)*55
 		var y2 = world.m_bodyList.m_position.y + Math.sin(world.m_bodyList.m_rotation+1.57)*55
-		if(lineCircle(x1,y1,x2,y2,cpx[i],cpy[i],cpr)){
+		if(lineCircle(x1,y1,x2,y2,cpx[i],cpy[i],cpr/2)){
 			//playerBody.m_linearVelocity.x = 0
 				//playerBody.m_linearVelocity.y = 0
 
@@ -61,13 +78,17 @@ if(special.includes(i)){
 			else if(i==5){
 				world.m_gravity = new b2Vec2(0, 300);
 			}
+			else if(i==7){
+				playerBody.color = 3
+			}
 			else if(i==6){
 				for (var b = world.m_bodyList; b; b = b.m_next) {
 					if(b.sp == 1){
-						b.m_linearVelocity.y = -70
+						b.m_linearVelocity.y = -170
 					}
 	}
 			}
+
 			else if(!cp.includes(i)){
 				//cp.push(i)
 
@@ -77,6 +98,7 @@ if(special.includes(i)){
 }
 
 function restart(){
+	p2Unlocked = 0
 	setupWorld(0)
 		if(Math.max(...cp)==0)world.m_gravity = new b2Vec2(0, 300)
 		if(Math.max(...cp)==3){
@@ -175,7 +197,7 @@ function drawWorld(world, context) {
 	playerBody = world.m_bodyList
 	for(var i = 0 ;i < player; i++) playerBody = playerBody.m_next
 	if(left == 1) playerBody.m_angularVelocity = -4
-	if(right == 1) playerBody.m_angularVelocity = 4//4
+	if(right == 1) playerBody.m_angularVelocity = 4
 	
 	ctx.fillStyle = 'rgb(' + (191-0) + ',' + (209-0) + ',' + (229-0) + ')'
 	ctx.fillRect(0,0,document.getElementById('canvas').width,document.getElementById('canvas').height)
@@ -183,7 +205,7 @@ function drawWorld(world, context) {
 	//ctx.fillText(Math.round(world.m_bodyList.m_position.x) + ' ' + Math.round(world.m_bodyList.m_position.y),100,100)
 
 	
-	var sc = 0.1
+	var sc = 0.06
 	
 	ctx.translate((-playerBody.GetCenterPosition().x+document.getElementById('canvas').width/2), (-playerBody.GetCenterPosition().y+document.getElementById('canvas').height/2))
 for (var b = world.m_bodyList; b; b = b.m_next) {
@@ -251,19 +273,21 @@ for (var b = world.m_bodyList; b; b = b.m_next) {
 	ctx.fillText('At least 0.001% of the way there!', 2500,-800)
 	ctx.fillText('AHHHHHH', 1300,-1000)*/
 	//ctx.fillText('Space.', 250,-1000)
-	//ctx.fillText('Also... do not look down.', 100,-600)
+	ctx.fillText('I wonder if', 1000,-4300)
+	ctx.fillText('Nice.', 7000,-200)
+	ctx.fillText('sample text', 10000,-200)
 	
 
 		ctx.restore()
 		if(playerBody.m_position.x < 611 && playerBody.m_position.y < -720) p2Unlocked = 1
-		if(p2Unlocked){
+		/*if(p2Unlocked){
 			ctx.fillStyle = colors[1]
 		ctx.strokeStyle = '#000000'
 		ctx.lineWidth = 3
 		ctx.fillRect(10,canvas.height-70,60,60)
 		ctx.strokeRect(10,canvas.height-70,60,60)
 		}
-		
+		*/
 
 
 }
