@@ -8,6 +8,7 @@ var canvasLeft;
 
 function restart(){
 	setupWorld(0)
+	p2Unlocked = 0
 		if(Math.max(...cp)==0)world.m_gravity = new b2Vec2(0, 300)
 		if(Math.max(...cp)==3){
 			world.m_gravity = new b2Vec2(0, -300)
@@ -41,7 +42,7 @@ function step(cnt) {
 	world.Step(timeStep, iteration);
 	ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 	drawWorld(world, ctx);
-	setTimeout('step(' + (cnt || 0) + ')', 10);
+	//setTimeout('step(' + (cnt || 0) + ')', 10);
 }
 Event.observe(window, 'load', function() {
 	setupWorld();
@@ -63,5 +64,5 @@ Event.observe(window, 'load', function() {
 		setupPrevWorld();
 		return false;
 	});*/
-	step();
+	setInterval('step(' + 0 + ')', 10);
 });
