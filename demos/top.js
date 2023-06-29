@@ -54,8 +54,8 @@ demos.top.initWorld = function(world) {
 	box1.color = 3
 	/*var slope = demos.top.createPoly(world, 1300, 400, [[-500,0],[0,-200],[0,0]], true,1);
 	slope.color = 4*/
-	for(var i = 0; i < 7;i++){
-		var b1 = createBox(world,1000+i*50, 300-i*50,50,25,false,10)
+	for(var i = 0; i < 3;i++){
+		var b1 = createBox(world,1000, 300-i*100,80,25,false,10)
 	b1.color = 5
 	}
 	
@@ -102,6 +102,7 @@ demos.top.initWorld = function(world) {
 	//pl1.m_position.x = 500
 	//pl1.m_position.y  = -800
 	pl.color = 2
+	pl.spin = 1
 	jointDef.body1 = box
 	jointDef.body2 = pl
 	jointDef.anchorPoint = box.GetCenterPosition()
@@ -141,10 +142,11 @@ var p = createBox(world, 330, -1440, 160, 500, true);
 		}
 
 
-		var m = createBox(world, 2155, -1392, 200, 180, true,10);
-	m.color = 1
+		var m4 = createBox(world, 2155, -1392, 200, 20, true,10);
+	m4.color = 1
 
-
+var m5 = createBox(world, 3155, -1392, 20, 20, true,10);
+	m5.color = 1
 	/*for(var i = 0; i < 10; i++){
 		for(var k = 0; k < 3; k++){
 			var b = createBox(world, 800+i*80, -1030-k*80, 40, 40, false, 100);
@@ -173,17 +175,39 @@ var p = createBox(world, 330, -1440, 160, 500, true);
 var p = createBox(world, 950, -2800, 70, 1400, false,99999);
 	p.color = 1
 	p.sp = 1
-var p = createBox(world, 1350, -1300, 10, 10, true);
+var p = createBox(world, 1350, -1300, 5, 20, true);
 	p.color = 1
-
-
+	var pr = m4
+	for(var i = 0; i < 53; i++){
+		var b = createBall(world, 2350+i*15, -1300, 10,60);
+	b.color = 2
+	b.spin = 1
+	jointDef.body1 = b
+	jointDef.body2 = pr
+	jointDef.anchorPoint = new b2Vec2(pr.m_position.x, pr.m_position.y);
+	world.CreateJoint(jointDef);
+	pr = b
+	}
+jointDef.body1 = b
+	jointDef.body2 = m5
+	jointDef.anchorPoint = new b2Vec2(b.m_position.x, b.m_position.y);
+	world.CreateJoint(jointDef);
+	pr = b
+	for(var i = 0; i < 50; i++){
+		var m = createBox(world, 3155+i*50, -1392+i*30, 20, 20, true,10);
+	m.color = 1
+	}
+	var m = createBox(world, 5155+i*50, -1392+i*30, 2000, 20, true,10);
+	m.color = 1
 ////////////////
 	var pl2 = createBox(world, -700, 190, 5,100, false,50);
 	pl2.m_position.x = 300
 	pl2.m_position.y  = -800
+	//pl2.m_position.x = 2050
+	//pl2.m_position.y  = -1650
 	pl2.color = 2
 	pl2.m_rotation = Math.PI/2
-	var pl1 = createBox(world, spawnX, spawnY, 5,55, false,100);
+	var pl1 = createBox(world, spawnX, spawnY, 55,5, false,100);
 	//pl1.m_position.x = 1850
 	//pl1.m_position.y = -400
 	pl1.color = 2
