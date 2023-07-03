@@ -24,48 +24,60 @@ demos.top.createPoly = function(world, x, y, points, fixed) {
 	polyBd.position.Set(x,y);
 	return world.CreateBody(polyBd)
 };
-demos.top.initWorld = function(world) {
-
-	var jointDef = new b2RevoluteJointDef();
-	var p1 = createBox(world, 150, 400, 1000, 20, true,1);
-	p1.color = 1
-	var p2 = createBox(world, 120, 300, 200, 100, true,1);
+var jointDef = 0
+var p3 = 0
+var p4 = 0
+function temp(o,o2,cube){
+	var p2 = createBox(world, 120+o, 300+o2, 200, 100, true,1);
 	p2.color = 1
-	var p3 = createBox(world, 1600, 400, 300, 20, true,1);
+	p3 = createBox(world, 1600+o, 400+o2, 300, 20, true,1);
 	p3.color = 1
-	var p4 = createBox(world, 2500, 0, 600, 20, false,1000);
+	
+		p4 = createBox(world, 2500+o, 0+o2, 600, 20, false,1000);
 	p4.color = 1
-	var p5 = createBox(world, 2900, 0, 170, 10, true,1000);
+	var p5 = createBox(world, 2900+o, 0+o2, 170, 10, true,1000);
 	p5.color = 1
 	for(var i = 0; i < 10; i++){
-		var p6 = createBox(world, 3100+i*50, -20-i*30, 10, 10, true,1000);
+		var p6 = createBox(world, 3100+i*50+o, -20-i*30+o2, 10, 10, true,1000);
 	p6.color = 1
 	}
-	var p6 = createBox(world, 3200+i*50, -20-i*30, 120, 10, true,1000);
+	var p6 = createBox(world, 3200+i*50+o, -20-i*30+o2, 120, 10, true,1000);
 	p6.color = 1
 	for(var i = 0; i < 10; i++){
-		var p6 = createBox(world, 3700-i*50, -380-i*30, 10, 10, true,1000);
+		var p6 = createBox(world, 3700-i*50+o, -380-i*30+o2, 10, 10, true,1000);
 	p6.color = 1
 	}
 
 
 
-	var box1 = createBox(world, -700, 250, 40,40, false,4);
+	var box1 = createBox(world, -700+o, 250+o2, 40,40, false,4);
 	box1.color = 3
 	/*var slope = demos.top.createPoly(world, 1300, 400, [[-500,0],[0,-200],[0,0]], true,1);
 	slope.color = 4*/
 	for(var i = 0; i < 3;i++){
-		var b1 = createBox(world,1000, 300-i*100,80,25,false,10)
+		var b1 = createBox(world,1000+o, 300-i*100+o2,80,25,false,10)
 	b1.color = 5
 	}
 	
 	for(var i = 1; i < 8;i++){
-		var p = createBox(world,1590+i*40, 375-i*50,250+i*10,25,true,10)
+		var p = createBox(world,1590+i*40+o, 375-i*50+o2,250+i*10,25,true,10)
 	p.color = 1
 	}
 
-	var p7 = createBox(world, 2700, -665, 500, 10, true,1000);
+	var p7 = createBox(world, 2700+o, -665+o2, 500, 10, true,1000);
 	p7.color = 1
+	jointDef.body1 = p4
+	jointDef.body2 = p3
+	jointDef.anchorPoint = new b2Vec2(p4.GetCenterPosition().x-100, p4.GetCenterPosition().y-500);
+	world.CreateJoint(jointDef);
+}
+
+demos.top.initWorld = function(world) {
+
+	jointDef = new b2RevoluteJointDef();
+	var p1 = createBox(world, 150, 400, 1000, 20, true,1);
+	p1.color = 1
+	temp(0,0,0)
 
 	for(var i2 = 0; i2 < 10; i2++){
 
@@ -169,10 +181,10 @@ var m5 = createBox(world, 3155, -1392, 20, 20, true,10);
 		var p = createBox(world, -3100-70-((i*(i+1)/(i+9)*i*i*111))%400-200, -2800-200*i-i*((i*(i+1)/(i+9)*i*i*116))%90, 70, 70, true,10);
 	p.color = 6
 	}
-	var p = createBox(world, -3100-70-((i*(i+1)/(i+9)*i*i*111))%400-150, -2800-200*i-i*((i*(i+1)/(i+9)*i*i*116))%90, 70, 70, true,10);
+	var p = createBox(world, -3100-70-((i*(i+1)/(i+9)*i*i*111))%400-150, -2800-200*i-i*((i*(i+1)/(i+9)*i*i*116))%90-100, 70, 170, true,10);
 	p.color = 6
 
-var p = createBox(world, 950, -2800, 70, 1400, false,99999);
+var p = createBox(world, 950, -2800, 70, 800, false,99999);
 	p.color = 1
 	p.sp = 1
 var p = createBox(world, 1350, -1300, 5, 20, true);
@@ -194,11 +206,16 @@ jointDef.body1 = b
 	world.CreateJoint(jointDef);
 	pr = b
 	for(var i = 0; i < 50; i++){
-		var m = createBox(world, 3155+i*50, -1392+i*30, 20, 20, true,10);
+		var m = createBox(world, 3155+i*50, -1392+i*20, 20, 20, true,10);
 	m.color = 1
 	}
-	var m = createBox(world, 5155+i*50, -1392+i*30, 2000, 20, true,10);
+	var w = 3850
+	var m = createBox(world, 5155+i*50+w-2000, -1392+i*30, w, 20, true,10);
 	m.color = 1
+	temp(12250,-292,1)
+	for(var i = 0; i < 10; i++){
+		//temp(13250,-692,0)
+	}
 ////////////////
 	var pl2 = createBox(world, -700, 190, 5,100, false,50);
 	pl2.m_position.x = 300
@@ -212,10 +229,7 @@ jointDef.body1 = b
 	//pl1.m_position.y = -400
 	pl1.color = 2
 	pl1.m_rotation = Math.PI/2
-	jointDef.body1 = p4
-	jointDef.body2 = p3
-	jointDef.anchorPoint = new b2Vec2(p4.GetCenterPosition().x-100, p4.GetCenterPosition().y-500);
-	world.CreateJoint(jointDef);
+	
 
 
 
