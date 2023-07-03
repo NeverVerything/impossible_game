@@ -5,33 +5,19 @@ var left = 0
 var right = 0
 var player = 0
 var playerBody;
-var colors = ['#d8bfaa','#AC8F79','#62a87c','#313b72','#edf67d','#e9d3d0']
+var colors = ['#d8bfaa','#AC8F79','#62a87c','#313b72','#edf67d','#e9d3d0','#9A6D38']
 var p2Unlocked = 0
-var cpx = [550,50,-1945,-3142,-3640,685,1350,950]//450
-var cpy = [-850,-1250,-2340,-2500,-3450,-1400,-1350,-4300]//-850
+var cpx = [550,50,-1945,-3142,-3640,685,1350,8500]//450
+var cpy = [-850,-1250,-2340,-2500,-3450,-1400,-1350,-32000]//-850
 var special=[1,2,4,5,6,7]
 var cp = []
 var cpr = 30
 var spawnX = -700
 var spawnY = 190
-//spawnX = 876
-//spawnY = -4400
+var zoomedOut = 0
+//spawnX = 11650
+//spawnY = -1850
 var timer = 0
-function dirTo(x1, y1, x2, y2){
-	x1 = x1 - canvas.width/2
-	x2 = x2 - canvas.width/2
-	y1 = canvas.height/2 - y1
-	y2 = canvas.height/2 - y2
-	var dir = 0
-	if(Math.abs(x2 - x1) < 0.001){
-		if(y2 - y1 < 0) dir = 90
-		else dir = 270
-	}
-	else{
-	if(x2 - x1 >= 0) dir = -Math.atan((y2 - y1) / (x2 - x1)) * 180 / Math.PI
-	else dir = 180 - Math.atan((y2 - y1) / (x2 - x1)) * 180 / Math.PI}
-return (dir + 90) 
-}
 function checkpoints(){
 	if(cp.length > 0){
 		spawnX = cpx[Math.max(...cp)]
@@ -48,7 +34,7 @@ function checkpoints(){
 		ctx.lineWidth = 3
 		var s = 1+Math.sin(timer)/300
 		var c = 1+Math.cos(timer)/300
-if(special.includes(i)){
+if(special.includes(i) || i == 0){
 		ctx.beginPath()
 		ctx.moveTo((cpx[i]-cpr/2)*s,cpy[i]*c)
 		ctx.lineTo(cpx[i]*s,(cpy[i]-cpr/2)*c)
@@ -58,10 +44,10 @@ if(special.includes(i)){
 		ctx.fill()
 		ctx.stroke()
 }
-		var x1 = world.m_bodyList.m_position.x - Math.cos(world.m_bodyList.m_rotation+1.57)*55
-		var x2 = world.m_bodyList.m_position.x + Math.cos(world.m_bodyList.m_rotation+1.57)*55
-		var y1 = world.m_bodyList.m_position.y - Math.sin(world.m_bodyList.m_rotation+1.57)*55
-		var y2 = world.m_bodyList.m_position.y + Math.sin(world.m_bodyList.m_rotation+1.57)*55
+		var x1 = world.m_bodyList.m_position.x - Math.cos(world.m_bodyList.m_rotation)*55
+		var x2 = world.m_bodyList.m_position.x + Math.cos(world.m_bodyList.m_rotation)*55
+		var y1 = world.m_bodyList.m_position.y - Math.sin(world.m_bodyList.m_rotation)*55
+		var y2 = world.m_bodyList.m_position.y + Math.sin(world.m_bodyList.m_rotation)*55
 		if(lineCircle(x1,y1,x2,y2,cpx[i],cpy[i],cpr/2)){
 			//playerBody.m_linearVelocity.x = 0
 				//playerBody.m_linearVelocity.y = 0
@@ -79,7 +65,12 @@ if(special.includes(i)){
 				world.m_gravity = new b2Vec2(0, 300);
 			}
 			else if(i==7){
-				playerBody.color = 3
+				playerBody.color = 7
+				for (var b = world.m_bodyList; b; b = b.m_next) {
+		for (var s = b.GetShapeList(); s != null; s = s.GetNext()) {
+			s.density = 5
+		}
+	}
 			}
 			else if(i==6){
 				for (var b = world.m_bodyList; b; b = b.m_next) {
@@ -90,7 +81,7 @@ if(special.includes(i)){
 			}
 
 			else if(!cp.includes(i)){
-				//cp.push(i)
+				if(i == 0) cp.push(i)
 
 			} 
 		}
@@ -192,6 +183,7 @@ right = 0
 
 
 function drawWorld(world, context) {
+
 	ctx.save()
 	timer += Math.random()/10
 	playerBody = world.m_bodyList
@@ -207,7 +199,7 @@ function drawWorld(world, context) {
 	
 	var sc = 0.06
 	
-	ctx.translate((-playerBody.GetCenterPosition().x+document.getElementById('canvas').width/2), (-playerBody.GetCenterPosition().y+document.getElementById('canvas').height/2))
+	if(!zoomedOut) ctx.translate((-playerBody.GetCenterPosition().x+document.getElementById('canvas').width/2), (-playerBody.GetCenterPosition().y+document.getElementById('canvas').height/2))
 for (var b = world.m_bodyList; b; b = b.m_next) {
 			if(b.spin==1){
 				b.m_linearVelocity.x *= 0.99
@@ -215,6 +207,7 @@ for (var b = world.m_bodyList; b; b = b.m_next) {
 			}
 					if(b.sp == 1){
 						b.m_linearVelocity.x = 0
+						if(world.m_gravity.y <= 0) b.m_linearVelocity.y = 250
 						b.m_position.x = 950
 						b.m_rotation = 0
 						b.m_angularVelocity = 0
@@ -223,8 +216,11 @@ for (var b = world.m_bodyList; b; b = b.m_next) {
 	}
 	checkpoints()
 	ctx.globalAlpha = 1
-	//ctx.translate(500,600)
-	//ctx.scale(sc,sc)
+	if(zoomedOut){
+		ctx.translate(500,600)
+	ctx.scale(sc,sc)
+	}
+	
 	ctx.fillStyle = '#143642'
 	ctx.strokeStyle = '#143642'
 	ctx.font = '50px arial'
@@ -240,6 +236,17 @@ for (var b = world.m_bodyList; b; b = b.m_next) {
 	ctx.closePath()
 	ctx.fill()
 
+
+	ctx.beginPath()
+	ctx.moveTo(-3850,-3450)
+	ctx.lineTo(-3850,-3250)
+	ctx.stroke()
+	ctx.beginPath()
+	ctx.moveTo(-3840,-3250)
+	ctx.lineTo(-3860,-3250)
+	ctx.lineTo(-3850,-3240)
+	ctx.closePath()
+	ctx.fill()
 	for (var j = world.m_jointList; j; j = j.m_next) {
 		drawJoint(j, context);
 	}
@@ -268,18 +275,14 @@ for (var b = world.m_bodyList; b; b = b.m_next) {
 	ctx.moveTo(-900,100)
 	ctx.lineTo(-860,100)
 	ctx.stroke()*/
-	/*ctx.fillText('Feel the pain.', 900,200)
-	ctx.fillText('Oh no!', 1200,1500)
-	ctx.fillText('At least 0.001% of the way there!', 2500,-800)
-	ctx.fillText('AHHHHHH', 1300,-1000)*/
-	//ctx.fillText('Space.', 250,-1000)
-	ctx.fillText('I wonder if', 1000,-4300)
-	ctx.fillText('Nice.', 7000,-200)
-	ctx.fillText('sample text', 10000,-200)
+	ctx.fillText('Space!', 250,-1000)
+	ctx.fillText('EXIT >>>>>>>>>>', 7000,-200)
+	//ctx.fillText("Oh no.", 12000,-200)
+	ctx.fillText("The edge.", 14800,-1000)
 	
 
 		ctx.restore()
-		if(playerBody.m_position.x < 611 && playerBody.m_position.y < -720) p2Unlocked = 1
+		if(/*playerBody.m_position.x < 611 && playerBody.m_position.y < -720*/ cp.includes(0)) p2Unlocked = 1
 		/*if(p2Unlocked){
 			ctx.fillStyle = colors[1]
 		ctx.strokeStyle = '#000000'
