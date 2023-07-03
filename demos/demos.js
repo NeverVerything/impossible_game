@@ -24,6 +24,7 @@ function setupWorld(did) {
 	initId %= demos.InitWorlds.length;
 	if (initId < 0) initId = demos.InitWorlds.length + initId;
 	demos.InitWorlds[initId](world);
+	world.m_bodyList.m_shapeList.m_friction = 0.9
 }
 
 setInterval(function(){
